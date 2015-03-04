@@ -2,29 +2,33 @@
 <html>
 <head>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-<script>
-jQuery(document).ready(function($) {
-  $.ajax({
-  url : "http://api.wunderground.com/api/Your_Key/geolookup/conditions/q/IA/Cedar_Rapids.json",
-  dataType : "jsonp",
+<script type="text/javascript">
+debugger;
+function underWeather(zipcode){
+  alert(zipcode+' ZipCode passed');
+$.ajax({
+  url : 'http://api.wunderground.com/api/9c801015ba7ec9b0/forecast/geolookup/q/' + zipcode + '.json',
+  dataType : 'jsonp',
   success : function(parsed_json) {
   var location = parsed_json['location']['city'];
   var temp_f = parsed_json['current_observation']['temp_f'];
   alert("Current temperature in " + location + " is: " + temp_f);
   }
-  });
 });
+}
 </script>
-    <script type="text/javascript">
-        function IsValidZipCode(zip) {
-            var isValid = /^[0-9]{5}(?:-[0-9]{4})?$/.test(zip);
-            if (isValid)
-                alert('Valid ZipCode');
-            else {
-                alert('Invalid ZipCode');
+<script type="text/javascript">
+    function IsValidZipCode(zip) {
+        var isValid = /^[0-9]{5}(?:-[0-9]{4})?$/.test(zip);
+        if (isValid){
+            alert(zip+' ZipCode');
+            underWeather(zip);
             }
+        else {
+            alert('Invalid ZipCode');
         }
-    </script>
+    }
+</script>
 </head>
 
 <body>
@@ -37,6 +41,7 @@ jQuery(document).ready(function($) {
 <input id="Button1" type="submit" value="Validate"
 onclick="IsValidZipCode(this.form.zip.value)" />
 </form>
+
 
 </body>
 </html>
