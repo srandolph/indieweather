@@ -3,11 +3,12 @@
 <head>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-debugger;
 function underWeather(zipcode){
-  alert(zipcode+' ZipCode passed');
+  debugger;
+  alert(zipcode + ' ZipCode passed');
+  var wugUrl = 'http://api.wunderground.com/api/9c801015ba7ec9b0/forecast/geolookup/q/' + zipcode + '.json' ;
 $.ajax({
-  url : 'http://api.wunderground.com/api/9c801015ba7ec9b0/forecast/geolookup/q/' + zipcode + '.json',
+  url : wugUrl ,
   dataType : 'jsonp',
   success : function(parsed_json) {
   var location = parsed_json['location']['city'];
@@ -38,7 +39,7 @@ $.ajax({
 <p id="demo">Enter Zip Code</p>
 <form>
 <input id="txtZip" name="zip" type="text" /><br />
-<input id="Button1" type="submit" value="Validate"
+<input id="Button1" type="submit" value="Enter"
 onclick="IsValidZipCode(this.form.zip.value)" />
 </form>
 
