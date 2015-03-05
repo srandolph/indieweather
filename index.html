@@ -2,71 +2,61 @@
 <html>
 <head>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript">
+
+	$(document).ready(function(e) {
+			var zip = "66215"
+			underWeather(zip)
+		});
 	function underWeather(zipcode) {
-				debugger;
-		var wugUrl = 'http://api.wunderground.com/api/9c801015ba7ec9b0/forecast/geolookup/q/'
-				+ zipcode + '.json';
+		var wugUrl = 'http://api.wunderground.com/api/9c801015ba7ec9b0/geolookup/forecast/conditions/q/' + zipcode + '.json';
 		$.ajax({
 			url: wugUrl,
 			dataType: "jsonp",
-			beforeSend: function(){
-									alert(this.url);
-                   $('#spinner').show();
-                   },
+			beforeSend: function() {
+			//	alert(this.url)
+			},
 			success: function(parsed_json) {
-				alert(' Success');
-						$('#spinner').hide();
-				var location = parsed_json['location']['city'];
-				var temp_f = parsed_json['current_observation']['temp_f'];
-				alert("Current temperature in " + location + " is: " + temp_f);
+      console.log(parsed_json);
+	  var icon_url_json = "http://icons.wxug.com/i/c/f/" + parsed_json['current_observation']['icon'] + ".gif";
+	  var icon_json = '<img src ="' + icon_url_json + '" />';
+	  var temp_json = parsed_json['current_observation']['temp_f'];
+		temp_json += "<span>°F</span>";
+	  var condition_json = parsed_json['current_observation']['weather'];
+	  var real_feel_json = "Feels Like " + parsed_json['current_observation']['feelslike_f'] + "°F";
+	  var wind_json = 'Winds are ' + parsed_json['current_observation']['wind_string'];
+	  var city_json = parsed_json['location']['city'];
+	  var state_json = parsed_json['location']['state'];
+      console.log(parsed_json.forecast.txt_forecast.forecastday);
+      console.log("-------");
+         for(var some in parsed_json.forecast.txt_forecast.forecastday){
+             console.log("*************");
+          $("#nxtDays").append("<b>"+parsed_json.forecast.txt_forecast.forecastday[some].title+" </b> <br />"+
+ parsed_json.forecast.txt_forecast.forecastday[some].fcttext+"<br />");
+          console.log(parsed_json.forecast.txt_forecast.forecastday[some].title);
+      }
+
+  document.getElementById("weather-icon").innerHTML = icon_json;
+  document.getElementById("temp").innerHTML = temp_json;
+  document.getElementById("condition").innerHTML = condition_json;
+  document.getElementById("real-feel").innerHTML = real_feel_json;
+  document.getElementById("wind").innerHTML = wind_json;
+  document.getElementById("city").innerHTML = city_json;
 			}
 		});
-	}
-</script>
+}
 
-<script type="text/javascript">
 	function IsValidZipCode(zip) {
 		var isValid = /^[0-9]{5}(?:-[0-9]{4})?$/.test(zip);
 		if (isValid) {
-			alert(zip + ' ZipCode');
 			underWeather(zip);
 		} else {
 			alert('Invalid ZipCode');
 		}
 	}
-</script>
 
-<script type="text/javascript">
-$(document).ready(function(){
-    $("#spinner").bind("ajaxSend", function() {
-        $(this).show();
-    }).bind("ajaxStop", function() {
-        $(this).hide();
-    }).bind("ajaxError", function() {
-        $(this).hide();
-    });
-
-     });
 </script>
-<div id="spinner" class="spinner" style="display:none;">
-    <img id="img-spinner" src="spinner.gif" alt="Loading"/>
-</div>
-<style>
-.spinner {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-left: -50px; /* half width of the spinner gif */
-    margin-top: -50px; /* half height of the spinner gif */
-    text-align:center;
-    z-index:1234;
-    overflow: auto;
-    width: 100px; /* width of the spinner gif */
-    height: 102px; /*hight of the spinner gif +2px to fix IE8 issue */
-}
-</style>
 
 </head>
 
@@ -80,6 +70,15 @@ $(document).ready(function(){
 			type="submit" value="Enter"
 			onclick="IsValidZipCode(this.form.zip.value)" /><br />
 	</form>
+
+		<h1>Current Weather Conditions</h1>
+    <div id="weather-icon">&nbsp;</div>
+    <div id="condition">&nbsp;</div>
+    <div id="temp">&nbsp;</div>
+    <div id="real-feel">&nbsp;</div>
+    <div id="city">&nbsp;</div>
+		<h1>Next 3 Days Forecasted </h1>
+ 		<div id="nxtDays">&nbsp;</div>
 
 	<p>
 		<a href="https://github.com/srandolph/indieweather">Code on
