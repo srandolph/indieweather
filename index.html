@@ -5,29 +5,34 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript">
 
-	$(document).ready(function(e) {
-			var zip = "66215"
-			underWeather(zip)
-		});
-	function underWeather(zipcode) {
-		var wugUrl = 'http://api.wunderground.com/api/9c801015ba7ec9b0/geolookup/forecast/conditions/q/' + zipcode + '.json';
-		$.ajax({
-			url: wugUrl,
-			dataType: "jsonp",
-			beforeSend: function() {
-			//	alert(this.url)
-			},
-			success: function(parsed_json) {
+  $(document).ready(function(e) {
+      var zip = getParameterByName('zip');
+      // var zip = "66215"
+//       alert(zip);
+      if (!zip){
+        var zip = "66215" ;
+    } ;
+      underWeather(zip)
+    });
+  function underWeather(zipcode) {
+    var wugUrl = 'http://api.wunderground.com/api/9c801015ba7ec9b0/geolookup/forecast/conditions/q/' + zipcode + '.json';
+    $.ajax({
+      url: wugUrl,
+      dataType: "jsonp",
+      beforeSend: function() {
+      //  alert(this.url)
+      },
+      success: function(parsed_json) {
       console.log(parsed_json);
-	  var icon_url_json = "http://icons.wxug.com/i/c/f/" + parsed_json['current_observation']['icon'] + ".gif";
-	  var icon_json = '<img src ="' + icon_url_json + '" />';
-	  var temp_json = parsed_json['current_observation']['temp_f'];
-		temp_json += "<span>°F</span>";
-	  var condition_json = parsed_json['current_observation']['weather'];
-	  var real_feel_json = "Feels Like " + parsed_json['current_observation']['feelslike_f'] + "°F";
-	  var wind_json = 'Winds are ' + parsed_json['current_observation']['wind_string'];
-	  var city_json = parsed_json['location']['city'];
-	  var state_json = parsed_json['location']['state'];
+    var icon_url_json = "http://icons.wxug.com/i/c/f/" + parsed_json['current_observation']['icon'] + ".gif";
+    var icon_json = '<img src ="' + icon_url_json + '" />';
+    var temp_json = parsed_json['current_observation']['temp_f'];
+    temp_json += "<span>°F</span>";
+    var condition_json = parsed_json['current_observation']['weather'];
+    var real_feel_json = "Feels Like " + parsed_json['current_observation']['feelslike_f'] + "°F";
+    var wind_json = 'Winds are ' + parsed_json['current_observation']['wind_string'];
+    var city_json = parsed_json['location']['city'];
+    var state_json = parsed_json['location']['state'];
       console.log(parsed_json.forecast.txt_forecast.forecastday);
       console.log("-------");
          for(var some in parsed_json.forecast.txt_forecast.forecastday){
@@ -37,24 +42,34 @@
           console.log(parsed_json.forecast.txt_forecast.forecastday[some].title);
       }
 
+  document.getElementById("city").innerHTML = city_json;
   document.getElementById("weather-icon").innerHTML = icon_json;
   document.getElementById("temp").innerHTML = temp_json;
   document.getElementById("condition").innerHTML = condition_json;
   document.getElementById("real-feel").innerHTML = real_feel_json;
   document.getElementById("wind").innerHTML = wind_json;
-  document.getElementById("city").innerHTML = city_json;
-			}
-		});
+
+      }
+    });
 }
 
-	function IsValidZipCode(zip) {
-		var isValid = /^[0-9]{5}(?:-[0-9]{4})?$/.test(zip);
-		if (isValid) {
-			underWeather(zip);
-		} else {
-			alert('Invalid ZipCode');
-		}
-	}
+  function IsValidZipCode(zip) {
+    var isValid = /^[0-9]{5}(?:-[0-9]{4})?$/.test(zip);
+    if (isValid) {
+      underWeather(zip);
+    } else {
+      if (!zip==='Input Zip Code'){
+        alert('Invalid ZipCode');
+      }
+    }
+  }
+
+  function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
 
 </script>
 
@@ -62,28 +77,31 @@
 
 <body>
 
-	<h1>IndieCIO Weather</h1>
+  <h1>IndieCIO Weather</h1>
 
-	<p id="demo">Enter Zip Code</p>
-	<form action="">
-		<input id="txtZip" name="zip" type="text" /> <input id="Button1"
-			type="submit" value="Enter"
-			onclick="IsValidZipCode(this.form.zip.value)" /><br />
-	</form>
+  <form action="">
+    <input id="txtZip" name="zip" type="text" value="Input Zip Code"
+    onfocus="this.value = this.value=='Input Zip Code'?'':this.value;"
+    onblur="this.value = this.value==''?'zip':this.value;">
 
-		<h2>Current Conditions</h2>
+    <input id="Button1" type="submit" value="Enter"
+    onclick="IsValidZipCode(this.form.zip.value)" /><br />
+  </form>
+
+    <h2>Current Conditions</h2>
+    <div id="city">&nbsp;</div>
     <div id="weather-icon">&nbsp;</div>
     <div id="condition">&nbsp;</div>
     <div id="temp">&nbsp;</div>
     <div id="real-feel">&nbsp;</div>
-    <div id="city">&nbsp;</div>
-		<h2>Next 3 Days Forecasted </h2>
- 		<div id="nxtDays">&nbsp;</div>
 
-	<p>
-		<a href="https://github.com/srandolph/indieweather">Code on
-			srandolph Github</a>
-	</p>
+    <h2>Next 3 Days Forecasted </h2>
+    <div id="nxtDays">&nbsp;</div>
+
+  <p>
+    <a href="https://github.com/srandolph/indieweather">Code on
+      srandolph Github</a>
+  </p>
 
 </body>
 </html>
