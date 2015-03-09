@@ -24,6 +24,8 @@
       },
       success: function(parsed_json) {
       console.log(parsed_json);
+
+    var cityst_json = parsed_json['location']['city'] + ", " + parsed_json['location']['state'] + " " + parsed_json['location']['zip'];
     var icon_url_json = "http://icons.wxug.com/i/c/f/" + parsed_json['current_observation']['icon'] + ".gif";
     var icon_json = '<img src ="' + icon_url_json + '" />';
     var temp_json = parsed_json['current_observation']['temp_f'];
@@ -31,8 +33,7 @@
     var condition_json = parsed_json['current_observation']['weather'];
     var real_feel_json = "Feels Like " + parsed_json['current_observation']['feelslike_f'] + "°F";
     var wind_json = 'Winds are ' + parsed_json['current_observation']['wind_string'];
-    var city_json = parsed_json['location']['city'];
-    var state_json = parsed_json['location']['state'];
+
       console.log(parsed_json.forecast.txt_forecast.forecastday);
       console.log("-------");
          for(var some in parsed_json.forecast.txt_forecast.forecastday){
@@ -42,7 +43,7 @@
           console.log(parsed_json.forecast.txt_forecast.forecastday[some].title);
       }
 
-  document.getElementById("city").innerHTML = city_json;
+  document.getElementById("cityst").innerHTML = cityst_json;
   document.getElementById("weather-icon").innerHTML = icon_json;
   document.getElementById("temp").innerHTML = temp_json;
   document.getElementById("condition").innerHTML = condition_json;
@@ -89,11 +90,12 @@
   </form>
 
     <h2>Current Conditions</h2>
-    <div id="city">&nbsp;</div>
+    <div id="cityst">&nbsp;</div>
     <div id="weather-icon">&nbsp;</div>
     <div id="condition">&nbsp;</div>
     <div id="temp">&nbsp;</div>
     <div id="real-feel">&nbsp;</div>
+    <div id="wind">&nbsp;</div>
 
     <h2>Next 3 Days Forecasted </h2>
     <div id="nxtDays">&nbsp;</div>
