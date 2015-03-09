@@ -6,25 +6,28 @@
 <script type="text/javascript">
 
   $(document).ready(function(e) {
+
       var zip = getParameterByName('zip');
-      // var zip = "66215"
-//       alert(zip);
+
       if (!zip){
         var zip = "66215" ;
     } ;
+
       underWeather(zip)
+
     });
   function underWeather(zipcode) {
+
     var wugUrl = 'http://api.wunderground.com/api/9c801015ba7ec9b0/geolookup/forecast/conditions/q/' + zipcode + '.json';
     $.ajax({
       url: wugUrl,
       dataType: "jsonp",
       beforeSend: function() {
-      //  alert(this.url)
+        $('#spinner').show();
       },
       success: function(parsed_json) {
       console.log(parsed_json);
-
+        $('#spinner').hide();
     var cityst_json = parsed_json['location']['city'] + ", " + parsed_json['location']['state'] + " " + parsed_json['location']['zip'];
     var icon_url_json = "http://icons.wxug.com/i/c/f/" + parsed_json['current_observation']['icon'] + ".gif";
     var icon_json = '<img src ="' + icon_url_json + '" />';
@@ -57,6 +60,7 @@
   function IsValidZipCode(zip) {
     var isValid = /^[0-9]{5}(?:-[0-9]{4})?$/.test(zip);
     if (isValid) {
+      $('#spinner').show();
       underWeather(zip);
     } else {
       if (!zip==='Input Zip Code'){
@@ -73,10 +77,27 @@
 }
 
 </script>
-
+<style>
+  .spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: -50px; /* half width of the spinner gif */
+    margin-top: -50px; /* half height of the spinner gif */
+    text-align:center;
+    z-index:1234;
+    overflow: auto;
+    width: 100px; /* width of the spinner gif */
+    height: 102px; /*hight of the spinner gif +2px to fix IE8 issue */
+}
+</style>
 </head>
 
 <body>
+
+  <div id="spinner" class="spinner" style="display:none;">
+    <img id="img-spinner" src="spinner.gif" alt="Loading"/>
+  </div>
 
   <h1>IndieCIO Weather</h1>
 
@@ -97,8 +118,10 @@
     <div id="real-feel">&nbsp;</div>
     <div id="wind">&nbsp;</div>
 
+    <div id=forecast>
     <h2>Next 3 Days Forecasted </h2>
     <div id="nxtDays">&nbsp;</div>
+    </divs>
 
   <p>
     <a href="https://github.com/srandolph/indieweather">Code on
