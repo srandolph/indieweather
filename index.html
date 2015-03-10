@@ -6,6 +6,7 @@
 <script type="text/javascript">
 
   $(document).ready(function(e) {
+
       var startzip = "64111"
       var zip = getParameterByName('zip');
       if (zip === "Input Zip Code"){
@@ -19,6 +20,7 @@
       underWeather(zip)
 
     });
+ // http://api.wunderground.com/api/9c801015ba7ec9b0/geolookup/forecast/conditions/q/64123.json
   function underWeather(zipcode) {
 
     var wugUrl = 'http://api.wunderground.com/api/9c801015ba7ec9b0/geolookup/forecast/conditions/q/' + zipcode + '.json';
@@ -33,11 +35,11 @@
         $('#spinner').hide();
     var cityst_json = parsed_json['location']['city'] + ", " + parsed_json['location']['state'] + " " + parsed_json['location']['zip'];
     var icon_url_json = "http://icons.wxug.com/i/c/f/" + parsed_json['current_observation']['icon'] + ".gif";
-    var icon_json = '<img src ="' + icon_url_json + '" />';
-    var temp_json = parsed_json['current_observation']['temp_f'];
-    temp_json += "<span>°F</span>";
-    var condition_json = parsed_json['current_observation']['weather'];
-    var real_feel_json = "Feels Like " + parsed_json['current_observation']['feelslike_f'] + "°F";
+    var icon_condition_json = '<img src ="' + icon_url_json + '" />  - ';
+    icon_condition_json += parsed_json['current_observation']['weather'];
+    var temp_json = parsed_json['current_observation']['temperature_string'];
+    //  temp_json += "<span>' °F'</span>";
+    temp_json += "  Feels Like " + parsed_json['current_observation']['feelslike_f'] + " F";
     var wind_json = 'Winds are ' + parsed_json['current_observation']['wind_string'];
 
       console.log(parsed_json.forecast.txt_forecast.forecastday);
@@ -50,10 +52,9 @@
       }
 
   document.getElementById("cityst").innerHTML = cityst_json;
-  document.getElementById("weather-icon").innerHTML = icon_json;
+  document.getElementById("weather-icon").innerHTML = icon_condition_json;
+//  document.getElementById("condition").innerHTML = condition_json;
   document.getElementById("temp").innerHTML = temp_json;
-  document.getElementById("condition").innerHTML = condition_json;
-  document.getElementById("real-feel").innerHTML = real_feel_json;
   document.getElementById("wind").innerHTML = wind_json;
 
       }
@@ -115,9 +116,7 @@
     <h2>Current Conditions</h2>
     <div id="cityst">&nbsp;</div>
     <div id="weather-icon">&nbsp;</div>
-    <div id="condition">&nbsp;</div>
     <div id="temp">&nbsp;</div>
-    <div id="real-feel">&nbsp;</div>
     <div id="wind">&nbsp;</div>
 
     <div id=forecast>
