@@ -18,7 +18,8 @@
     } ;
 
       underWeather(zip)
-
+      $("#current").width(250);
+      $("#forecast").width(250);
     });
  // http://api.wunderground.com/api/9c801015ba7ec9b0/geolookup/forecast/conditions/q/64123.json
   function underWeather(zipcode) {
@@ -112,17 +113,18 @@
     <input id="Button1" type="submit" value="Enter"
     onclick="IsValidZipCode(this.form.zip.value)" /><br />
   </form>
-
+    <div id="current">
     <h2>Current Conditions</h2>
     <div id="cityst">&nbsp;</div>
     <div id="weather-icon">&nbsp;</div>
     <div id="temp">&nbsp;</div>
     <div id="wind">&nbsp;</div>
+    </div>
 
-    <div id=forecast>
+    <div id="forecast">
     <h2>Next 3 Days Forecasted </h2>
     <div id="nxtDays">&nbsp;</div>
-    </divs>
+    </div>
 
   <p>
     <a href="https://github.com/srandolph/indieweather">Code on
