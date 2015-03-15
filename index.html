@@ -18,8 +18,8 @@
     } ;
 
       underWeather(zip)
-      $("#current").width(250);
-      $("#forecast").width(250);
+      $("#current").width(200);
+      $("#forecast").width(200);
     });
  // http://api.wunderground.com/api/9c801015ba7ec9b0/geolookup/forecast/conditions/q/64123.json
   function underWeather(zipcode) {
@@ -35,26 +35,26 @@
       console.log(parsed_json);
         $('#spinner').hide();
     var cityst_json = parsed_json['location']['city'] + ", " + parsed_json['location']['state'] + " " + parsed_json['location']['zip'];
-    var icon_url_json = "http://icons.wxug.com/i/c/f/" + parsed_json['current_observation']['icon'] + ".gif";
+    var icon_url_json = "http://icons.wxug.com/i/c/k/" + parsed_json['current_observation']['icon'] + ".gif";
     var icon_condition_json = '<img src ="' + icon_url_json + '" />  - ';
     icon_condition_json += parsed_json['current_observation']['weather'];
     var temp_json = parsed_json['current_observation']['temperature_string'];
-    //  temp_json += "<span>' °F'</span>";
-    temp_json += "  Feels Like " + parsed_json['current_observation']['feelslike_f'] + " F";
+    temp_json += "<br />  Feels Like " + parsed_json['current_observation']['feelslike_f'] + " F";
     var wind_json = 'Winds are ' + parsed_json['current_observation']['wind_string'];
 
       console.log(parsed_json.forecast.txt_forecast.forecastday);
       console.log("-------");
-         for(var some in parsed_json.forecast.txt_forecast.forecastday){
+      for(var some in parsed_json.forecast.txt_forecast.forecastday){
              console.log("*************");
-          $("#nxtDays").append("<b>"+parsed_json.forecast.txt_forecast.forecastday[some].title+" </b> <br />"+
- parsed_json.forecast.txt_forecast.forecastday[some].fcttext+"<br />");
+          $("#nxtDays").append(
+            "<b>"+parsed_json.forecast.txt_forecast.forecastday[some].title+"</b>"
+            +'<img src ="'+parsed_json.forecast.txt_forecast.forecastday[some].icon_url+'" /> '
+            +"<br />"+parsed_json.forecast.txt_forecast.forecastday[some].fcttext+"<br />");
           console.log(parsed_json.forecast.txt_forecast.forecastday[some].title);
       }
 
   document.getElementById("cityst").innerHTML = cityst_json;
   document.getElementById("weather-icon").innerHTML = icon_condition_json;
-//  document.getElementById("condition").innerHTML = condition_json;
   document.getElementById("temp").innerHTML = temp_json;
   document.getElementById("wind").innerHTML = wind_json;
 
@@ -84,8 +84,8 @@
 <style>
 .spinner {
     position: fixed;
-    top: 25%;
-    left: 25%;
+    top: 15%;
+    left: 15%;
     margin-left: -50px; /* half width of the spinner gif */
     margin-top: -50px; /* half height of the spinner gif */
     text-align:center;
@@ -103,7 +103,7 @@
     <img id="img-spinner" src="spinner.gif" alt="Loading"/>
   </div>
 
-  <h1>IndieCIO Weather</h1>
+  <h2>Current Weather</h2>
 
   <form action="">
     <input id="txtZip" name="zip" type="text" value="Input Zip Code"
@@ -114,7 +114,7 @@
     onclick="IsValidZipCode(this.form.zip.value)" /><br />
   </form>
     <div id="current">
-    <h2>Current Conditions</h2>
+
     <div id="cityst">&nbsp;</div>
     <div id="weather-icon">&nbsp;</div>
     <div id="temp">&nbsp;</div>
@@ -122,7 +122,7 @@
     </div>
 
     <div id="forecast">
-    <h2>Next 3 Days Forecasted </h2>
+    <h2>Forecast</h2>
     <div id="nxtDays">&nbsp;</div>
     </div>
 
